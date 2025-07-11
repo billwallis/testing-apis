@@ -45,7 +45,7 @@ def main() -> None:
         tfl_connector.get_journey_plan(
             from_="4900000248S",  # London Victoria
             to="490000080A",  # Farringdon Station
-            journey_planner_search_params=journey_params,
+            search_params=journey_params,
         ).json()
     )
 
