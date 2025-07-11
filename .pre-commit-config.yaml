@@ -39,3 +39,9 @@ repos:
         args: ["--fix"]
       - id: ruff-format
         name: Format Python code
+
+  - repo: https://github.com/billwallis/bills-hooks
+    rev: v0.0.5
+    hooks:
+      - id: pre-commit-validate
+      - id: tidy-gitkeep
