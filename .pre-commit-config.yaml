@@ -31,19 +31,17 @@ repos:
       - id: check-ast
         name: Validate Python
 
-  # Formatting
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
-    hooks:
-      - id: prettier
-        name: Make code pretty
-        exclude: .*\.(nrql|graphql)
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.4
+    rev: v0.12.2
     hooks:
       - id: ruff
         name: Lint Python code
         args: ["--fix"]
       - id: ruff-format
         name: Format Python code
+
+  - repo: https://github.com/billwallis/bills-hooks
+    rev: v0.0.5
+    hooks:
+      - id: pre-commit-validate
+      - id: tidy-gitkeep

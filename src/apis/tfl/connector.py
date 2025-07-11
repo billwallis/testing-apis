@@ -117,17 +117,14 @@ class TFLConnector:
         self,
         from_: str,
         to: str,
-        # fmt: off
-        journey_planner_search_params: model.JourneyPlannerSearchParams
-        | None = None,
-        # fmt: on
+        search_params: model.JourneyPlannerSearchParams | None = None,
     ) -> requests.Response:
         """
         https://api-portal.tfl.gov.uk/api-details#api=Journey
         """
         endpoint = f"Journey/JourneyResults/{from_}/to/{to}"
-        if journey_planner_search_params:
-            endpoint += f"?{journey_planner_search_params.to_params()}"
+        if search_params:
+            endpoint += f"?{search_params.to_params()}"
         return requests.request(
             method="GET",
             url=self.base_url + endpoint,
