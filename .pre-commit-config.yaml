@@ -1,7 +1,11 @@
+# yaml-language-server: $schema=https://json.schemastore.org/pre-commit-config.json
 ---
 ci:
   autoupdate_schedule: quarterly
-  skip: ["identity"]
+  skip: ["identity", "pytest"]
+
+default_install_hook_types: ["pre-commit", "pre-push"]
+default_stages: ["pre-commit"]
 
 repos:
   - repo: meta
@@ -9,7 +13,7 @@ repos:
       - id: identity
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: no-commit-to-branch
         name: Don't allow commits to the main branch
@@ -24,24 +28,43 @@ repos:
         name: Check for large files
       - id: check-json
         name: Check JSON files are valid and parseable
+        exclude: "devcontainer.json"
       - id: check-yaml
         name: Check YAML files are valid and parseable
       - id: check-toml
         name: Check TOML files are valid and parseable
       - id: check-ast
         name: Validate Python
+      - id: detect-private-key
+        name: Check for the existence of private keys
+
+  - repo: https://github.com/pre-commit-ci/pre-commit-ci-config
+    rev: v1.6.1
+    hooks:
+      - id: check-pre-commit-ci-config
+        name: Validate pre-commit CI config
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.2
+    rev: v0.13.2
     hooks:
-      - id: ruff
+      - id: ruff-check
         name: Lint Python code
         args: ["--fix"]
       - id: ruff-format
         name: Format Python code
 
   - repo: https://github.com/billwallis/bills-hooks
-    rev: v0.0.5
+    rev: v0.0.6
     hooks:
-      - id: pre-commit-validate
       - id: tidy-gitkeep
+        name: Remove redundant .gitkeep files
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run unit tests
+        entry: pytest tests --quiet
+        stages: ["pre-push"]
+        language: system
+        pass_filenames: false
+        always_run: true
