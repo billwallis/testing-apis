@@ -17,13 +17,16 @@ import json
 import requests
 
 
-
 class JiraClient:
     """
-    Bridge class for the Jira REST API.
+    Bridge class for the Jira API.
     """
 
+    domain: str
+    base_url: str
+
     def __init__(self, domain: str, api_key: str, api_secret: str) -> None:
+        self.domain = domain
         self.base_url = f"https://{domain}.atlassian.net/"
         self._api_key = api_key
         self._api_secret = api_secret
@@ -52,6 +55,25 @@ class JiraClient:
             "Accept": "application/json",
             "Authorization": self.auth_basic,
         }
+
+    def graphql(
+        self, query: str, variables: dict | None = None
+    ) -> requests.Response:
+        """
+        https://developer.atlassian.com/platform/atlassian-graphql-api/graphql/#overview
+        """
+
+        endpoint = "gateway/api/graphql"
+        return requests.post(
+            url=self.base_url + endpoint,
+            headers=self.request_headers,
+            data=json.dumps(
+                {
+                    "query": query,
+                    "variables": {} if variables is None else variables,
+                },
+            ),
+        )
 
     def get_projects_paginated(self) -> requests.Response:
         """

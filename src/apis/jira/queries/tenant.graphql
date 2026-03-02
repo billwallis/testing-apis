@@ -1,0 +1,6 @@
+query getTenant($host: String!) {
+  # $host = "your-domain.atlassian.net"
+  tenantContexts(hostNames: [$host]) {
+    cloudId
+  }
+}

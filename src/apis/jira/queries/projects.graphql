@@ -1,0 +1,40 @@
+query getProjects($cloudId: ID!) {
+  jira {
+    allJiraProjects(cloudId: $cloudId, filter: {types: [SOFTWARE]}) {
+      totalCount
+      pageInfo {
+        hasNextPage
+        # hasPreviousPage
+        # startCursor
+        # endCursor
+      }
+      edges {
+        # cursor
+        node {
+          # id
+          projectId
+          key
+          name
+          # description
+          boards(first: 100) {
+            totalCount
+            pageInfo {
+              hasNextPage
+              # hasPreviousPage
+              # startCursor
+              # endCursor
+            }
+            edges {
+              # cursor
+              node {
+                # id
+                boardId
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+query getMe {
+  me {
+    user {
+      ... on AtlassianAccountUser {
+        accountId
+        accountStatus
+        name
+        picture
+      }
+    }
+  }
+}
