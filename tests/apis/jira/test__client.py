@@ -4,10 +4,10 @@ import dataclasses
 
 import pytest
 
-from src.apis.jira import connector
+from src.apis.jira import client
 
 DOMAIN = "test-domain"
-BASE_URL = f"https://{DOMAIN}.atlassian.net/rest/api/3/"
+BASE_URL = f"https://{DOMAIN}.atlassian.net/"
 
 
 @dataclasses.dataclass
@@ -26,18 +26,18 @@ class Credentials:
 
 
 @pytest.fixture
-def connection() -> connector.JiraConnector:
+def jira_client() -> client.JiraClient:
     creds = Credentials.default()
-    return connector.JiraConnector(
+    return client.JiraClient(
         domain=creds.domain,
         api_key=creds.api_key,
         api_secret=creds.api_secret,
     )
 
 
-def test__connector_properties_are_correct(connection: connector.JiraConnector):
-    assert connection.base_url == BASE_URL
-    assert connection.request_headers == {
+def test__connector_properties_are_correct(jira_client: client.JiraClient):
+    assert jira_client.base_url == BASE_URL
+    assert jira_client.request_headers == {
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": "Basic c29tZS1rZXk6c29tZS1zZWNyZXQ=",
