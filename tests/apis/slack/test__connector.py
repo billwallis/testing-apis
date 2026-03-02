@@ -25,7 +25,7 @@ def test__message_can_be_posted_successfully(
 ):
     posted_data = []
 
-    def mock_post(url: str, data: str):
+    def mock_post(url: str, data: str) -> SimpleNamespace:
         posted_data.append({"url": url, "data": data})
         return SimpleNamespace(
             status_code=http.HTTPStatus.OK,
@@ -52,7 +52,7 @@ def test__message_raises_exception_on_error(
 ):
     posted_data = []
 
-    def mock_post(url: str, data: str):
+    def mock_post(url: str, data: str) -> SimpleNamespace:
         posted_data.append({"url": url, "data": data})
         return SimpleNamespace(
             status_code=http.HTTPStatus.BAD_REQUEST,

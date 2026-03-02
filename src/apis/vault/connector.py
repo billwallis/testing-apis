@@ -12,7 +12,7 @@ class VaultConnector:
     Bridge class for the HashiCorp Vault REST API.
     """
 
-    def __init__(self, domain: str, api_key: str, api_secret: str):
+    def __init__(self, domain: str, api_key: str, api_secret: str) -> None:
         self.base_url = f"https://{domain}/v1/"
         self.api_key = api_key
         self.api_secret = api_secret

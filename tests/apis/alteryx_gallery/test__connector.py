@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 
 import pytest
@@ -14,7 +16,7 @@ class Credentials:
     api_secret: str
 
     @classmethod
-    def default(cls):
+    def default(cls) -> Credentials:
         return cls(
             base_url=BASE_URL,
             api_key="some-key",

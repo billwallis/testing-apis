@@ -19,7 +19,7 @@ class AmexConnector:
     - https://developer.americanexpress.com/
     """
 
-    def __init__(self, account_key: str, cookie: str | None = None):
+    def __init__(self, account_key: str, cookie: str | None = None) -> None:
         self.base_url = BASE_URL
         self.account_key = account_key
         self.cookie = cookie

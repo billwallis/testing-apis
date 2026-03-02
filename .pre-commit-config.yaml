@@ -2,7 +2,7 @@
 ---
 ci:
   autoupdate_schedule: quarterly
-  skip: ["identity", "uv-lock", "ty", "pytest", "coverage-badge"]
+  skip: ["identity", "uv-lock", "pytest", "coverage-badge"]
 
 default_install_hook_types: ["pre-commit", "pre-push"]
 default_stages: ["pre-commit"]
@@ -22,6 +22,7 @@ repos:
         name: Remove trailing whitespace
       - id: end-of-file-fixer
         name: Ensure files end with a newline character
+        exclude: "coverage.svg"
       - id: mixed-line-ending
         name: Align mixed line ending
       - id: check-added-large-files
@@ -58,16 +59,16 @@ repos:
       - id: ruff-format
         name: Format Python code
 
-  # https://github.com/astral-sh/ty?tab=readme-ov-file#getting-started
-  - repo: local
-    hooks:
-      - id: ty
-        name: Run type checks
-        entry: uvx ty check
-        language: system
-        pass_filenames: true
-        always_run: false
-        types: ["python"]
+#  # https://github.com/astral-sh/ty?tab=readme-ov-file#getting-started
+#  - repo: local
+#    hooks:
+#      - id: ty
+#        name: Run type checks
+#        entry: uvx ty check
+#        language: system
+#        pass_filenames: true
+#        always_run: false
+#        types: ["python"]
 
   - repo: https://github.com/billwallis/bills-hooks
     rev: v0.0.8

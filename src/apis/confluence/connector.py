@@ -21,7 +21,7 @@ class ConfluenceConnector:
     Bridge class for the Confluence REST API.
     """
 
-    def __init__(self, domain: str, api_key: str, api_secret: str):
+    def __init__(self, domain: str, api_key: str, api_secret: str) -> None:
         self.base_url = f"https://{domain}.atlassian.net/wiki/rest/api/"
         self._api_key = api_key
         self._api_secret = api_secret

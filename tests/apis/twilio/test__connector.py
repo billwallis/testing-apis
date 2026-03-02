@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 
 import pytest
@@ -15,7 +17,7 @@ class Credentials:
     api_secret: str
 
     @classmethod
-    def default(cls):
+    def default(cls) -> Credentials:
         return cls(
             workspace=WORKSPACE,
             api_key="some-key",

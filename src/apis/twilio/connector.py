@@ -12,7 +12,7 @@ class TwilioConnector:
     Bridge class for the Twilio REST API.
     """
 
-    def __init__(self, workspace: str, api_key: str, api_secret: str):
+    def __init__(self, workspace: str, api_key: str, api_secret: str) -> None:
         self.base_url = (
             f"https://taskrouter.twilio.com/v1/Workspaces/{workspace}/"
         )

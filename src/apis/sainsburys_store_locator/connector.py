@@ -14,7 +14,7 @@ class StoreLocatorConnector:
     Bridge class for the Sainsbury's Store Locator API.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.base_url = BASE_URL
 
     @property
@@ -40,7 +40,7 @@ class StoreLocatorConnector:
             headers=self.request_headers,
         )
 
-    def get_store_by_id(self, store_id) -> requests.Response:
+    def get_store_by_id(self, store_id: int) -> requests.Response:
         """
         https://app.swaggerhub.com/apis-docs/JSainsburys/Storelocater_API_PROD/1.0.0#/stores/getStore
         """

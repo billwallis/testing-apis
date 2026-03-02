@@ -27,7 +27,7 @@ class CompanyNumberValueError(Exception):
     Invalid company number.
     """
 
-    def __init__(self, company_number: str or int):
+    def __init__(self, company_number: str | int) -> None:
         super().__init__(
             f"The company number must be exactly 8 characters long and include the leading 0."
             f" The company number {company_number} is invalid"
@@ -58,12 +58,12 @@ def _format_company_number(company_number: str | int) -> str:
 
 
 class CompanyNumber:
-    def __init__(self, company_number: str | int):
+    def __init__(self, company_number: str | int) -> None:
         if not _is_valid_company_number(company_number):
             raise CompanyNumberValueError(company_number)
         self.company_number = _format_company_number(company_number)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.company_number
 
 
@@ -93,7 +93,7 @@ class Company:
         companies_house_connector: ICompaniesHouseConnector,
         company_number: CompanyNumber,
         validate_company_number_on_init: bool = True,
-    ):
+    ) -> None:
         self._connector = companies_house_connector
         self._company_number = company_number
         self._company_profile: dict or None = None
@@ -102,7 +102,7 @@ class Company:
         if validate_company_number_on_init:
             self.set_company_number()
 
-    def set_company_number(self):
+    def set_company_number(self) -> None:
         self._company_number = self.get_company_profile()["company_number"]
 
     @property

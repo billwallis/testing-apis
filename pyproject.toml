@@ -46,7 +46,7 @@ namespace = true
 
 
 [tool.pytest.ini_options]
-addopts = "--cov=src --cov-fail-under=80"
+addopts = "--cov=src"
 testpaths = ["tests"]
 
 

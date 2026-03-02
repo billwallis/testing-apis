@@ -12,7 +12,7 @@ from src.apis import twilio
 dotenv.load_dotenv()
 
 
-def main():
+def main() -> None:
     """
     Manually test the API client.
     """

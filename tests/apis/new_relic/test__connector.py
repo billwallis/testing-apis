@@ -9,7 +9,7 @@ from src.apis.new_relic import connector
 
 
 class MockResponse:
-    def __init__(self, data: dict, code: int):
+    def __init__(self, data: dict, code: int) -> None:
         self.data = data
         self.code = code
 
@@ -44,7 +44,9 @@ def test__queries_are_constructed_correctly(
     monkeypatch: pytest.MonkeyPatch,
     connection: connector.NewRelicConnector,
 ):
-    def mock_get(url: str, headers: dict, params: dict, timeout: int):
+    def mock_get(
+        url: str, headers: dict, params: dict, timeout: int
+    ) -> MockResponse:
         assert url == "https://api.newrelic.com/graphql/"
         assert timeout == 10
         assert headers == {
