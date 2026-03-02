@@ -13,10 +13,7 @@ dotenv.load_dotenv()
 
 
 def main() -> None:
-    """
-    Test the ``JiraConnector`` class.
-    """
-    jira_connector = jira.JiraConnector(
+    jira_connector = jira.JiraClient(
         domain=os.getenv("ATLASSIAN__DOMAIN"),
         api_key=os.getenv("ATLASSIAN__API_KEY"),
         api_secret=os.getenv("ATLASSIAN__API_SECRET"),
@@ -28,13 +25,13 @@ def main() -> None:
     utils.pprint(
         jira_connector.get_project_components(project_id=project_id).json()
     )
-    utils.pprint(
-        jira_connector.create_issue(
-            project_id=project_id,
-            summary="A test from the API",
-            description="Some basic description",
-        ).json()
-    )
+    # utils.pprint(
+    #     jira_connector.create_issue(
+    #         project_id=project_id,
+    #         summary="A test from the API",
+    #         description="Some basic description",
+    #     ).json()
+    # )
 
 
 if __name__ == "__main__":

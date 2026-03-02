@@ -4,8 +4,8 @@ API clients for Jira.
 https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/
 """
 
-from src.apis.jira.connector import JiraConnector
+from src.apis.jira.client import JiraClient
 
 __all__ = [
-    "JiraConnector",
+    "JiraClient",
 ]
