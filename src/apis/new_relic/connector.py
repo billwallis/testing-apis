@@ -18,7 +18,7 @@ class NewRelicConnector:
     Bridge class for the New Relic NerdGraph (GraphQL) API.
     """
 
-    def __init__(self, account_id: str, api_key: str):
+    def __init__(self, account_id: str, api_key: str) -> None:
         self.base_url = BASE_URL
         self.account_id = account_id
         self.api_key = api_key

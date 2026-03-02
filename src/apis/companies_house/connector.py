@@ -17,7 +17,7 @@ from src.apis.companies_house import model
 BASE_URL = "https://api.company-information.service.gov.uk/"
 
 
-def _build_query_parameters(**kwargs) -> str:
+def _build_query_parameters(**kwargs: Any) -> str:
     """
     Parse the key-value arguments into a parameter string.
 
@@ -37,7 +37,7 @@ def _build_query_parameters(**kwargs) -> str:
 
 
 class CompaniesHouseConnector:
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str) -> None:
         self.base_url = BASE_URL
         self.api_key = api_key
 

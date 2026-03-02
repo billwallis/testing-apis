@@ -17,7 +17,7 @@ class MetabaseConnector:
     Bridge class for the Metabase REST API.
     """
 
-    def __init__(self, base_url: str, api_key: str, api_secret: str):
+    def __init__(self, base_url: str, api_key: str, api_secret: str) -> None:
         """
         Create the connector.
         """

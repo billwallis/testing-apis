@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 from types import SimpleNamespace
 
@@ -16,7 +18,7 @@ class Credentials:
     api_secret: str
 
     @classmethod
-    def default(cls):
+    def default(cls) -> Credentials:
         return cls(
             domain="vault.test",
             api_key="some-key",

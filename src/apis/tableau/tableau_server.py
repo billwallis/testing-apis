@@ -12,7 +12,7 @@ class TableauUser:
     A user in the corresponding Tableau server.
     """
 
-    def __init__(self, key: str, secret: str, auth_type: str):
+    def __init__(self, key: str, secret: str, auth_type: str) -> None:
         """
         :param key: the REST API key.
         :param secret: the REST API secret.
@@ -35,7 +35,7 @@ class TableauUser:
         )
         # self.server.auth.sign_in(self._auth)
 
-    def list_datasources(self):
+    def list_datasources(self) -> None:
         """Example method to test the class"""
         with self.server.auth.sign_in(self._auth):
             all_datasources, pagination_item = self.server.datasources.get()
@@ -44,7 +44,7 @@ class TableauUser:
             )
             print([datasource.name for datasource in all_datasources])
 
-    def list_workbooks(self):
+    def list_workbooks(self) -> None:
         """Example method to test the class"""
         with self.server.auth.sign_in(self._auth):
             all_workbooks, pagination_item = self.server.workbooks.get()

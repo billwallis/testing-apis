@@ -34,7 +34,7 @@ class TableauConnector:
         api_key: str,
         api_secret: str,
         auth_type: str = "uap",
-    ):
+    ) -> None:
         self.base_url = f"https://{domain}/api/{API_VERSION}/"
         self.api_key = api_key
         self.api_secret = api_secret

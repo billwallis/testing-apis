@@ -14,7 +14,7 @@ class TFLConnector:
     Bridge class for the TfL REST API.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.base_url = BASE_URL
 
     @property

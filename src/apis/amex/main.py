@@ -39,7 +39,7 @@ def _add_month(date: datetime.date) -> datetime.date:
     return datetime.date(date.year, date.month + 1, date.day)
 
 
-def _get_statement(conn: amex.AmexConnector, date: datetime.date):
+def _get_statement(conn: amex.AmexConnector, date: datetime.date) -> None:
     """
     Retrieve a statement for a given end date and save it to a file.
     """

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 from types import SimpleNamespace
 
@@ -27,7 +29,7 @@ class Credentials:
     auth_type: str
 
     @classmethod
-    def default(cls):
+    def default(cls) -> Credentials:
         return cls(
             domain="tableau.test",
             api_key="some-key",

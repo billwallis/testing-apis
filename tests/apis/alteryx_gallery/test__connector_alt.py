@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 import uuid
 
@@ -10,22 +12,22 @@ BASE_URL = "http://some.ip.address/api/"
 
 class MockTime:
     @staticmethod
-    def time():
+    def time() -> int:
         return 1637748738
 
 
 class MockUUID:
     @staticmethod
-    def uuid1():
+    def uuid1() -> uuid.UUID:
         return uuid.UUID("0baecdf0-f808-11ef-98ca-00e04c244920")
 
     @staticmethod
-    def uuid4():
+    def uuid4() -> uuid.UUID:
         return uuid.UUID("dd4f2306-bf41-416b-8084-936da02e8dd4")
 
 
 class MockClient:
-    def __init__(self, client_key: str, client_secret: str):
+    def __init__(self, client_key: str, client_secret: str) -> None:
         self.client_key = client_key
         self.client_secret = client_secret
 
@@ -45,7 +47,7 @@ class Credentials:
     api_secret: str
 
     @classmethod
-    def default(cls):
+    def default(cls) -> Credentials:
         return cls(
             base_url=BASE_URL,
             api_key="some-key",

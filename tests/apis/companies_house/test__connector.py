@@ -29,7 +29,7 @@ def test__search_parameters_are_built_correctly(
 ):
     request_data = {}
 
-    def mock_request(method: str, url: str, headers: dict):
+    def mock_request(method: str, url: str, headers: dict) -> None:
         request_data["method"] = method
         request_data["url"] = url
         request_data["headers"] = headers

@@ -28,7 +28,7 @@ class BrazeConnector:
     Bridge class for the Braze REST API.
     """
 
-    def __init__(self, base_url: str, brand: str, api_key: str):
+    def __init__(self, base_url: str, brand: str, api_key: str) -> None:
         self.base_url = base_url
         self.brand = _parse_brand(brand)
         self.api_key = api_key

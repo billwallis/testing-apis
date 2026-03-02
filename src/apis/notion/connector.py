@@ -12,7 +12,9 @@ class NotionConnector:
     Bridge class for the Notion REST API.
     """
 
-    def __init__(self, api_token: str, version: str = DEFAULT_NOTION_VERSION):
+    def __init__(
+        self, api_token: str, version: str = DEFAULT_NOTION_VERSION
+    ) -> None:
         """
         Create the connector.
         """
