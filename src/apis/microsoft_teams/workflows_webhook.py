@@ -6,15 +6,16 @@ enabled via Workflows:
 """
 
 import os
-from typing import TypedDict, Literal
+from typing import Literal, TypedDict
 
 import requests
 
 type AdaptiveCard = dict
-MessagePayload = TypedDict(
-    "MessagePayload",
-    {"type": Literal["message"], "attachments": list[AdaptiveCard]},
-)
+
+
+class MessagePayload(TypedDict):
+    type: Literal["message"]
+    attachments: list[AdaptiveCard]
 
 
 def _create_adaptive_card(message: str) -> AdaptiveCard:
@@ -36,9 +37,9 @@ def _create_adaptive_card(message: str) -> AdaptiveCard:
                     "type": "TextBlock",
                     "text": message,
                     "wrap": True,
-                }
-            ]
-        }
+                },
+            ],
+        },
     }
 
 
