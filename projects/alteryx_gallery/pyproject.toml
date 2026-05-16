@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/pyproject.json
+
+[project]
+name = "alteryx-gallery"
+version = "0.0.0"
+dependencies = [
+    "requests-oauthlib",  # "normal"
+    "oauthlib",  # "alternative"
+]

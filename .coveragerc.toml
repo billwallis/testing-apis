@@ -1,0 +1,23 @@
+[run]
+branch = true
+source = [
+    "projects/alteryx_gallery/src",
+    "projects/amex/src",
+    "projects/braze/src",
+    "projects/companies_house/src",
+    "projects/confluence/src",
+    "projects/gmail/src",
+    "projects/google_sheets/src",
+    "projects/jira/src",
+    "projects/metabase/src",
+    "projects/microsoft_teams/src",
+    "projects/new_relic/src",
+    "projects/notion/src",
+    "projects/sainsburys_store_locator/src",
+    "projects/slack/src",
+    "projects/tableau/src",
+    "projects/tempo/src",
+    "projects/tfl/src",
+    "projects/twilio/src",
+    "projects/vault/src",
+]

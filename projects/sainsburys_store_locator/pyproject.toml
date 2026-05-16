@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://json.schemastore.org/pyproject.json
+
+[project]
+name = "sainsburys-store-locator"
+version = "0.0.0"
+dependencies = []
