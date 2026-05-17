@@ -97,6 +97,7 @@ repos:
           --input-file 'coverage.xml'
           --output-file coverage.svg
           --silent
+        # https://github.com/smarie/python-genbadge/releases
         additional_dependencies: ["genbadge[coverage]==1.1.3"]
         stages: ["pre-push"]
         language: python
