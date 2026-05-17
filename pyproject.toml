@@ -10,44 +10,126 @@ version = "0.0.0"
 description = "Testing REST APIs either for personal projects or for work."
 authors = [{name = "billwallis"}]
 readme = "README.md"
+license-files = ["LICENSE"]
 requires-python = ">=3.13"
 dependencies = [
+    # These are used in all projects
     "python-dotenv>=1.0.1",
     "requests>=2.32.0",
+
+    "alteryx-gallery",
+    "amex",
+    "braze",
+    "companies-house",
+    "confluence",
+    "gmail",
+    "google-sheets",
+    "jira",
+    "metabase",
+    "microsoft-teams",
+    "new-relic",
+    "notion",
+    "sainsburys-store-locator",
+    "slack",
+    "tableau",
+    "tempo",
+    "tfl",
+    "twilio",
+    "vault",
 ]
 
 [dependency-groups]
 dev = [
+    "poethepoet>=0.42.1",
     "pre-commit>=4.5.1",
+
+    "tools",
 ]
 test = [
-    "pytest>=9.0.3",
+    "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
-]
-alteryx = [
-    "requests-oauthlib",  # "normal"
-    "oauthlib",  # "alternative"
-]
-metabase = [
-    "jwt",
-]
-tableau = [
-    "tableauserverclient",
 ]
 
 
 [tool.uv]
 required-version = ">=0.8"
 default-groups = "all"
-package = false
+
+[tool.uv.workspace]
+members = ["projects/*"]
+exclude = ["projects/__pycache__"]
+
+[tool.uv.sources]
+tools = {path = "tools"}
+alteryx-gallery = {workspace = true}
+amex = {workspace = true}
+braze = {workspace = true}
+companies-house = {workspace = true}
+confluence = {workspace = true}
+gmail = {workspace = true}
+google-sheets = {workspace = true}
+jira = {workspace = true}
+metabase = {workspace = true}
+microsoft-teams = {workspace = true}
+new-relic = {workspace = true}
+notion = {workspace = true}
+sainsburys-store-locator = {workspace = true}
+slack = {workspace = true}
+tableau = {workspace = true}
+tempo = {workspace = true}
+tfl = {workspace = true}
+twilio = {workspace = true}
+vault = {workspace = true}
 
 [tool.uv.build-backend]
 namespace = true
 
 
+[tool.poe]
+verbosity = -1
+envfile.optional = ".env"
+
+[tool.poe.tasks]
+install.shell = """
+    uv sync --refresh
+    uv run pre-commit install --install-hooks
+"""
+upgrade.shell = """
+    uv sync --refresh --upgrade
+    uv run pre-commit autoupdate
+"""
+test = "uv run pytest -vvv"
+add.shell = """
+    uv run -m tools.src.tools.add ${name}
+"""
+add.args = [
+    {name = "name", positional = true, required = true},
+]
+
+[tool.poe.tasks.lint]
+control.expr = "sys.platform"
+
+[[tool.poe.tasks.lint.switch]]
+case = "win32"
+shell = """
+    echo '=== pre-commit checks ==='
+    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-commit
+    echo '=== pre-push checks ==='
+    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-push
+"""
+
+[[tool.poe.tasks.lint.switch]]
+shell = """
+    echo '\\033[0;34mpre-commit checks\\033[0m'
+    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-commit
+    echo '\\033[0;34mpre-push checks\\033[0m'
+    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-push
+"""
+
+
 [tool.pytest.ini_options]
-addopts = "--cov=src"
-testpaths = ["tests"]
+addopts = "--cov"
+testpaths = ["projects/*/tests"]
 
 
 [tool.ruff]
@@ -80,6 +162,8 @@ select = [
 ignore = [
     "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed
     "E501",    # Line too long
+    "S101",    # Use of `assert` detected
+    "S113",    # Probable use of `requests` call without timeout
 ]
 fixable = ["ALL"]
 unfixable = []
@@ -88,16 +172,11 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 # https://github.com/astral-sh/ruff/issues/4368
 [tool.ruff.lint.extend-per-file-ignores]
-"*.py" = [
-    "S105",    #  Possible hardcoded password assigned to variable
-    "S106",    #  Possible hardcoded password assigned to argument
-    "S113",    #  Probable use of `requests` call without timeout
-    "PLR0913", #  Too many arguments in function definition
-]
-"tests/**/*.py" = [
+"projects/*/tests/**/*.py" = [
     "ANN001",   # Missing type annotation for function argument
     "ANN201",   # Missing return type annotation for public function
     "S101",     # Use of `assert` detected
+    "S106",     # Possible hardcoded password assigned to argument
     "PLR2004",  # Magic value used in comparison
     "PLR0913",  # Too many arguments in function definition
 ]

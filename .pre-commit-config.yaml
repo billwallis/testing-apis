@@ -2,7 +2,7 @@
 ---
 ci:
   autoupdate_schedule: quarterly
-  skip: ["identity", "uv-lock", "pytest", "coverage-badge"]
+  skip: ["identity", "uv-lock", "check-coverage-schema", "pytest", "coverage-badge"]
 
 default_install_hook_types: ["pre-commit", "pre-push"]
 default_stages: ["pre-commit"]
@@ -34,26 +34,26 @@ repos:
       - id: check-pre-commit-ci-config
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.3
+    rev: 0.11.14
     hooks:
       - id: uv-lock
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.9
+    rev: v0.15.12
     hooks:
       - id: ruff-check
         args: ["--fix"]
       - id: ruff-format
 
   - repo: https://github.com/billwallis/bills-hooks
-    rev: v0.0.13
+    rev: v0.0.15
     hooks:
       - id: banned-python-code
       - id: check-no-commit-comment
       - id: tidy-gitkeep
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.1
+    rev: 0.37.2
     hooks:
       - id: check-github-workflows
       - id: check-compose-spec
@@ -63,19 +63,29 @@ repos:
       - id: check-pyproject-schema
         name: Validate pyproject.toml schema
         entry: check-jsonschema
+        args: ["--schemafile", "https://json.schemastore.org/pyproject.json"]
+        files: pyproject.toml
         pass_filenames: true
         language: python
-        additional_dependencies: ["check-jsonschema==0.37.0"]
-        files: pyproject.toml
-        args: ["--schemafile", "https://json.schemastore.org/pyproject.json"]
+        additional_dependencies: ["check-jsonschema==0.37.2"]
         # This calls a remote URL, so run on pre-push to avoid slowing down commits
         stages: ["pre-push"]
 
   - repo: local
     hooks:
+      - id: check-coverage-schema
+        name: Validate .coveragerc.toml schema
+        entry: lint-coverage
+        files: .coveragerc.toml
+        args: ["--root-dir", "."]
+        pass_filenames: true
+        language: python
+
+  - repo: local
+    hooks:
       - id: pytest
         name: Run unit tests
-        entry: uv run pytest tests --quiet --cov-report=xml
+        entry: uv run pytest --quiet --cov-report=xml
         stages: ["pre-push"]
         language: unsupported
         pass_filenames: false
