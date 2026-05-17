@@ -749,7 +749,7 @@ dev = [
     { name = "tools", directory = "tools" },
 ]
 test = [
-    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "pytest", specifier = ">=9.0.3" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
 ]
 
