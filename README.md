@@ -18,10 +18,10 @@ Testing REST APIs either for personal projects or for work.
 
 Any 'production' API usage will be in its own corresponding repo.
 
-## Quick start
+## Contributing
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and then install the dependencies:
 
-```bash
+```shell
 uvx --from poethepoet poe install
 ```
