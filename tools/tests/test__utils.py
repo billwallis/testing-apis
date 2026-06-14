@@ -1,5 +1,5 @@
 import pytest
-from projects.utils import utils
+import utils
 
 
 def test__query_params_can_be_built() -> None:
