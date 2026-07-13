@@ -37,6 +37,7 @@ dependencies = [
     "tfl",
     "twilio",
     "vault",
+    "wunderground",
 ]
 
 [dependency-groups]
@@ -80,6 +81,7 @@ tempo = {workspace = true}
 tfl = {workspace = true}
 twilio = {workspace = true}
 vault = {workspace = true}
+wunderground = {workspace = true}
 
 [tool.uv.build-backend]
 namespace = true
