@@ -29,6 +29,7 @@ dependencies = [
     "microsoft-teams",
     "new-relic",
     "notion",
+    "quorum_oda",
     "sainsburys-store-locator",
     "slack",
     "tableau",
@@ -71,6 +72,7 @@ metabase = {workspace = true}
 microsoft-teams = {workspace = true}
 new-relic = {workspace = true}
 notion = {workspace = true}
+quorum-oda = {workspace = true}
 sainsburys-store-locator = {workspace = true}
 slack = {workspace = true}
 tableau = {workspace = true}

@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://json.schemastore.org/pyproject.json
+
+[project]
+name = "quorum-oda"
+version = "0.0.0"
+dependencies = [
+    "selenium>=4.45.0",
+]
