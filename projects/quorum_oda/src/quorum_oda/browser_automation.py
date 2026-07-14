@@ -1,10 +1,14 @@
+import datetime
 import os
+import pathlib
 import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 
+HERE = pathlib.Path(__file__).resolve().parent
+HOME = pathlib.Path.home().resolve()
 LOGIN_EMAIL = os.environ["MICROSOFT_EMAIL"]
 LOGIN_PASSWORD = os.environ["MICROSOFT_PASSWORD"]
 QUORUM_HOME_URL = "https://quorum.okta.com/app/UserHome"
@@ -18,6 +22,8 @@ MICROSOFT_SSO_URL = "https://login.microsoftonline.com/"
 MICROSOFT_STAY_SIGNED_IN_URL = (
     "https://login.microsoftonline.com/common/SAS/ProcessAuth"
 )
+EXCEL_REPORT_DOWNLOAD_PATH = HOME / "Downloads/Multi-Company Trial Balance.xlsx"
+EXCEL_REPORT_TARGET_DIR = HERE / "data"
 
 
 def microsoft_sso(driver: WebDriver) -> None:
@@ -174,18 +180,43 @@ def trigger_and_download_report(driver: WebDriver) -> None:
     download_trial_balance_report(driver)
 
 
-def main() -> int:
-    rc = 0
-    chrome_driver = webdriver.Chrome()
+def copy_to_archive(
+    source_file: pathlib.Path,
+    target_directory: pathlib.Path,
+) -> None:
+    assert source_file.exists()
 
+    target_file = source_file.with_stem(
+        f"{source_file.stem} {datetime.datetime.now().isoformat()}"
+    )
+    source_file.rename(target_file)
+    target_file.move_into(target_directory)
+
+
+def main() -> int:
+    if EXCEL_REPORT_DOWNLOAD_PATH.exists():
+        print(
+            f"error: a copy of the report already exists at {EXCEL_REPORT_DOWNLOAD_PATH}"
+        )
+        return 1
+
+    rc = 0
+    chrome_driver = webdriver.Chrome()  # TODO: wrap this in a context manager
     try:
         trigger_and_download_report(chrome_driver)
     except Exception as err:
         print(err)
         rc = 1
-
     chrome_driver.quit()
-    return rc
+    if rc != 0:
+        return rc
+
+    copy_to_archive(
+        source_file=EXCEL_REPORT_DOWNLOAD_PATH,
+        target_directory=EXCEL_REPORT_TARGET_DIR,
+    )
+
+    return 0
 
 
 if __name__ == "__main__":
