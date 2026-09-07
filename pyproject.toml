@@ -22,6 +22,7 @@ dependencies = [
     "braze",
     "companies-house",
     "confluence",
+    "dataiku",
     "gmail",
     "google-sheets",
     "jira",
@@ -66,6 +67,7 @@ amex = {workspace = true}
 braze = {workspace = true}
 companies-house = {workspace = true}
 confluence = {workspace = true}
+dataiku = {workspace = true}
 gmail = {workspace = true}
 google-sheets = {workspace = true}
 jira = {workspace = true}
