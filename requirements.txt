@@ -1,0 +1,30 @@
+# common dependencies
+python-dotenv>=1.0.1
+requests>=2.32.0
+
+# tools
+-e file:./tools
+
+# projects
+-e file:./projects/alteryx_gallery
+-e file:./projects/amex
+-e file:./projects/braze
+-e file:./projects/companies_house
+-e file:./projects/confluence
+-e file:./projects/dataiku
+-e file:./projects/gmail
+-e file:./projects/google_sheets
+-e file:./projects/jira
+-e file:./projects/metabase
+-e file:./projects/microsoft_teams
+-e file:./projects/new_relic
+-e file:./projects/notion
+-e file:./projects/quorum_oda
+-e file:./projects/sainsburys_store_locator
+-e file:./projects/slack
+-e file:./projects/tableau
+-e file:./projects/tempo
+-e file:./projects/tfl
+-e file:./projects/twilio
+-e file:./projects/vault
+-e file:./projects/wunderground

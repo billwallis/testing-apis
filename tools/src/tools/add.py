@@ -1,6 +1,7 @@
 import argparse
 import pathlib
 import re
+import subprocess
 import textwrap
 from collections.abc import Sequence
 
@@ -11,10 +12,11 @@ PROJECTS_PATH = HERE.parent.parent.parent / "projects"
 
 
 def _validate_name(name: str) -> None:
-    if re.match(r"^[a-zA-Z0-9_]+$", name):
+    pattern = r"^[a-zA-Z0-9_]+$"
+    if re.match(pattern, name):
         return
 
-    raise ValueError(f"{name!r} is not a valid name")
+    raise ValueError(f"{name!r} is not a valid name, does not match {pattern}")
 
 
 def _snake_to_kebab(snake_name: str) -> str:
@@ -25,6 +27,14 @@ def _add_file(filename: pathlib.Path, content: str | None = None) -> None:
     filename.touch(exist_ok=True)
     if content:
         filename.write_text(content, encoding="utf-8")
+
+
+def _run(cmd: Sequence[str]) -> None:
+    subprocess.run(  # noqa: S603
+        args=cmd,
+        check=True,  # Raise an exception on non-zero return codes
+        capture_output=True,
+    )
 
 
 def add_project(project_name: str) -> int:
@@ -57,6 +67,22 @@ def add_project(project_name: str) -> int:
             """
         ),
     )
+
+    print("TODO: add project to pyproject.toml:tool.coverage.run.source")
+    print(
+        textwrap.indent(
+            textwrap.dedent(
+                f"""\
+                    "projects/{project_name}/src/",
+                    "projects/{project_name}/tests/",
+                """
+            ),
+            prefix="    ",
+        )
+    )
+
+    print("TODO: add project to requirements.txt")
+    print(f"    -e file:./projects/{project_name}")
 
     return SUCCESS
 

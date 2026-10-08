@@ -2,7 +2,7 @@
 ---
 ci:
   autoupdate_schedule: quarterly
-  skip: ["identity", "uv-lock", "pytest", "test-coverage", "coverage-badge"]
+  skip: ["identity", "pytest", "test-coverage", "coverage-badge"]
 
 default_install_hook_types: ["pre-commit", "pre-push"]
 default_stages: ["pre-commit"]
@@ -33,18 +33,6 @@ repos:
     hooks:
       - id: check-pre-commit-ci-config
 
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.23
-    hooks:
-      - id: uv-lock
-
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.10
-    hooks:
-      - id: ruff-check
-        args: ["--fix"]
-      - id: ruff-format
-
   - repo: https://github.com/billwallis/bills-hooks
     rev: v0.0.16
     hooks:
@@ -64,7 +52,7 @@ repos:
           entry: check-jsonschema
           pass_filenames: true
           language: python
-          additional_dependencies: ["check-jsonschema==0.37.2"]
+          additional_dependencies: ["check-jsonschema==0.38.2"]
           # This calls a remote URL, so run on pre-push to avoid slowing down commits
           stages: ["pre-push"]
         id: check-pyproject-schema
@@ -86,15 +74,15 @@ repos:
           stages: ["pre-push"]
         id: pytest
         name: Run unit tests
-        entry: uv run coverage run -m pytest --quiet
-      - <<: *tests-config
-        id: coverage-xml
-        name: Write coverage XML report
-        entry: uv run coverage xml --quiet
+        entry: coverage run -m pytest --quiet
       - <<: *tests-config
         id: test-coverage
         name: Tests have 100% run coverage
-        entry: uv run coverage report --no-skip-covered --include '**/tests/*' --fail-under 100
+        entry: coverage report --no-skip-covered --include 'projects/*/tests/*' --fail-under 100
+      - <<: *tests-config
+        id: coverage-xml
+        name: Write coverage XML report
+        entry: coverage xml --include 'projects/*/src/*' --quiet
       - <<: *tests-config
         id: coverage-badge
         name: Generate coverage badge
