@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/pyproject.json
 [build-system]
-requires = ["uv_build"]
-build-backend = "uv_build"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "testing-apis"
@@ -11,35 +11,7 @@ authors = [{name = "billwallis"}]
 readme = "README.md"
 license-files = ["LICENSE"]
 requires-python = ">=3.13"
-dependencies = [
-    "tools",
-    # These are used in all projects
-    "python-dotenv>=1.0.1",
-    "requests>=2.32.0",
-
-    "alteryx-gallery",
-    "amex",
-    "braze",
-    "companies-house",
-    "confluence",
-    "dataiku",
-    "gmail",
-    "google-sheets",
-    "jira",
-    "metabase",
-    "microsoft-teams",
-    "new-relic",
-    "notion",
-    "quorum_oda",
-    "sainsburys-store-locator",
-    "slack",
-    "tableau",
-    "tempo",
-    "tfl",
-    "twilio",
-    "vault",
-    "wunderground",
-]
+dynamic = ["dependencies"]
 
 [dependency-groups]
 dev = [
@@ -47,46 +19,15 @@ dev = [
     "pre-commit>=4.6.0",
 ]
 test = [
-    "coverage>=7.13.5",
     "covdefaults>=2.3.0",
+    "coverage>=7.13.5",
     "pytest>=9.0.3",
 ]
 
 
-[tool.uv]
-default-groups = "all"
-
-[tool.uv.workspace]
-members = ["projects/*"]
-exclude = ["projects/__pycache__"]
-
-[tool.uv.sources]
-tools = {path = "tools"}
-alteryx-gallery = {workspace = true}
-amex = {workspace = true}
-braze = {workspace = true}
-companies-house = {workspace = true}
-confluence = {workspace = true}
-dataiku = {workspace = true}
-gmail = {workspace = true}
-google-sheets = {workspace = true}
-jira = {workspace = true}
-metabase = {workspace = true}
-microsoft-teams = {workspace = true}
-new-relic = {workspace = true}
-notion = {workspace = true}
-quorum-oda = {workspace = true}
-sainsburys-store-locator = {workspace = true}
-slack = {workspace = true}
-tableau = {workspace = true}
-tempo = {workspace = true}
-tfl = {workspace = true}
-twilio = {workspace = true}
-vault = {workspace = true}
-wunderground = {workspace = true}
-
-[tool.uv.build-backend]
-namespace = true
+# For some reason, setuptools doesn't like the editable syntax :sob:
+#[tool.setuptools.dynamic]
+#dependencies = {file = ["requirements.txt"]}
 
 
 [tool.poe]
@@ -95,20 +36,18 @@ envfile.optional = ".env"
 
 [tool.poe.tasks]
 install.shell = """
-    uv sync --refresh
-    uv run pre-commit install --install-hooks
-"""
-upgrade.shell = """
-    uv sync --refresh --upgrade
-    uv run pre-commit autoupdate
+    pip install --editable . --requirement requirements.txt
+    pip install --editable . --group dev --group test
+    pre-commit install --install-hooks
 """
 test.shell = """
-    uv run coverage run -m pytest -vvv
-    uv run coverage report --no-skip-covered
-    uv run coverage xml --quiet
+    coverage run -m pytest -vvv
+    coverage xml --quiet
+    coverage report --no-skip-covered --include 'projects/*/tests/*'
+    coverage report --no-skip-covered --include 'projects/*/src/*'
 """
 add.shell = """
-    uv run -m tools.src.tools.add ${name}
+    python -m tools.src.tools.add ${name}
 """
 add.args = [
     {name = "name", positional = true, required = true},
@@ -121,77 +60,73 @@ control.expr = "sys.platform"
 case = "win32"
 shell = """
     echo '=== pre-commit checks ==='
-    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-commit
+    SKIP=identity pre-commit run --all-files --hook-stage pre-commit
     echo '=== pre-push checks ==='
-    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-push
+    SKIP=identity pre-commit run --all-files --hook-stage pre-push
 """
 
 [[tool.poe.tasks.lint.switch]]
 shell = """
     echo '\\033[0;34mpre-commit checks\\033[0m'
-    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-commit
+    SKIP=identity pre-commit run --all-files --hook-stage pre-commit
     echo '\\033[0;34mpre-push checks\\033[0m'
-    SKIP=identity uv run pre-commit run --all-files --hook-stage pre-push
+    SKIP=identity pre-commit run --all-files --hook-stage pre-push
 """
 
 
 [tool.pytest.ini_options]
-testpaths = ["**/tests"]
+testpaths = ["projects/*/tests"]
 
 [tool.coverage]
+run.source = [
+    "projects/alteryx_gallery/src",
+    "projects/alteryx_gallery/tests",
+    "projects/amex/src",
+    "projects/amex/tests",
+    "projects/braze/src",
+    "projects/braze/tests",
+    "projects/companies_house/src",
+    "projects/companies_house/tests",
+    "projects/confluence/src",
+    "projects/confluence/tests",
+    "projects/dataiku/src",
+    "projects/dataiku/tests",
+    "projects/gmail/src",
+    "projects/gmail/tests",
+    "projects/google_sheets/src",
+    "projects/google_sheets/tests",
+    "projects/jira/src",
+    "projects/jira/tests",
+    "projects/metabase/src",
+    "projects/metabase/tests",
+    "projects/microsoft_teams/src",
+    "projects/microsoft_teams/tests",
+    "projects/new_relic/src",
+    "projects/new_relic/tests",
+    "projects/notion/src",
+    "projects/notion/tests",
+    "projects/quorum_oda/src",
+    "projects/quorum_oda/tests",
+    "projects/sainsburys_store_locator/src",
+    "projects/sainsburys_store_locator/tests",
+    "projects/slack/src",
+    "projects/slack/tests",
+    "projects/tableau/src",
+    "projects/tableau/tests",
+    "projects/tempo/src",
+    "projects/tempo/tests",
+    "projects/tfl/src",
+    "projects/tfl/tests",
+    "projects/twilio/src",
+    "projects/twilio/tests",
+    "projects/vault/src",
+    "projects/vault/tests",
+    "projects/wunderground/src",
+    "projects/wunderground/tests",
+]
 run.plugins = ["covdefaults"]  # https://youtu.be/70T6OxKwxm0
-report.fail_under = 1
+report.fail_under = 10
 report.exclude_lines = [
     "@pytest.mark.skip",
     "@pytest.mark.xfail",
-]
-
-
-[tool.ruff]
-line-length = 80
-indent-width = 4
-target-version = "py313"
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
-
-[tool.ruff.lint]
-select = [
-    "ANN",   # flake8-annotations
-    "B",     # flake8-bugbear
-    "E",     # pycodestyle-error
-    "F",     # Pyflakes
-    "FURB",  # refurb
-    "I",     # isort
-    "N",     # pep8-naming
-    "PL",    # Pylint
-    "PERF",  # Perflint
-    "RUF",   # Ruff-specific
-    "S",     # flake8-bandit
-    "UP",    # pyupgrade
-    "W",     # pycodestyle-warning
-]
-ignore = [
-    "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed
-    "E501",    # Line too long
-    "S101",    # Use of `assert` detected
-    "S113",    # Probable use of `requests` call without timeout
-]
-fixable = ["ALL"]
-unfixable = []
-# Allow unused variables when underscore-prefixed
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-# https://github.com/astral-sh/ruff/issues/4368
-[tool.ruff.lint.extend-per-file-ignores]
-"**/tests/**/*.py" = [
-    "ANN001",   # Missing type annotation for function argument
-    "ANN201",   # Missing return type annotation for public function
-    "S101",     # Use of `assert` detected
-    "S106",     # Possible hardcoded password assigned to argument
-    "PLR2004",  # Magic value used in comparison
-    "PLR0913",  # Too many arguments in function definition
 ]
