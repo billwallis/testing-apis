@@ -93,7 +93,7 @@ class CompaniesHouseConnector:
             headers=self.request_headers,
         )
 
-    def get_company_officers(  # noqa: PLR0913
+    def get_company_officers(  # noqa: PLR0913, PLR0917
         self,
         company_number: model.CompanyNumber,
         items_per_page: int = 35,
