@@ -8,20 +8,32 @@ name = "testing-apis"
 version = "0.0.0"
 description = "Testing REST APIs either for personal projects or for work."
 authors = [{name = "billwallis"}]
+maintainers = [{name = "billwallis"}]
 readme = "README.md"
+urls.Homepage = "https://github.com/billwallis/testing-apis"
+urls.Repository = "https://github.com/billwallis/testing-apis"
+urls.Issues = "https://github.com/billwallis/testing-apis/issues"
+urls.Documentation = "https://github.com/billwallis/testing-apis/blob/main/README.md"
+license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+]
 dynamic = ["dependencies"]
 
 [dependency-groups]
 dev = [
-    "poethepoet>=0.46.0",
-    "pre-commit>=4.6.0",
+    "poethepoet>=0.48.0",
+    "pre-commit>=4.6.2",
 ]
 test = [
     "covdefaults>=2.3.0",
-    "coverage>=7.13.5",
-    "pytest>=9.0.3",
+    "coverage>=7.16.0",
+    "pytest>=9.1.1",
 ]
 
 
@@ -30,52 +42,9 @@ test = [
 #dependencies = {file = ["requirements.txt"]}
 
 
-[tool.poe]
-verbosity = -1
-envfile.optional = ".env"
-
-[tool.poe.tasks]
-install.shell = """
-    pip install --editable . --requirement requirements.txt
-    pip install --editable . --group dev --group test
-    pre-commit install --install-hooks
-"""
-test.shell = """
-    coverage run -m pytest -vvv
-    coverage xml --quiet
-    coverage report --no-skip-covered --include 'projects/*/tests/*'
-    coverage report --no-skip-covered --include 'projects/*/src/*'
-"""
-add.shell = """
-    python -m tools.src.tools.add ${name}
-"""
-add.args = [
-    {name = "name", positional = true, required = true},
-]
-
-[tool.poe.tasks.lint]
-control.expr = "sys.platform"
-
-[[tool.poe.tasks.lint.switch]]
-case = "win32"
-shell = """
-    echo '=== pre-commit checks ==='
-    SKIP=identity pre-commit run --all-files --hook-stage pre-commit
-    echo '=== pre-push checks ==='
-    SKIP=identity pre-commit run --all-files --hook-stage pre-push
-"""
-
-[[tool.poe.tasks.lint.switch]]
-shell = """
-    echo '\\033[0;34mpre-commit checks\\033[0m'
-    SKIP=identity pre-commit run --all-files --hook-stage pre-commit
-    echo '\\033[0;34mpre-push checks\\033[0m'
-    SKIP=identity pre-commit run --all-files --hook-stage pre-push
-"""
-
-
 [tool.pytest.ini_options]
 testpaths = ["projects/*/tests"]
+
 
 [tool.coverage]
 run.source = [
@@ -130,3 +99,46 @@ report.exclude_lines = [
     "@pytest.mark.skip",
     "@pytest.mark.xfail",
 ]
+
+
+[tool.poe]
+verbosity = -1
+envfile.optional = ".env"
+
+[tool.poe.tasks]
+install.shell = """
+    pip install \
+      --editable . \
+      --requirement requirements.txt \
+      --group dev \
+      --group test \
+      --force-reinstall
+    pre-commit install --install-hooks
+"""
+test.shell = """
+    coverage erase
+    coverage run -m pytest -vvv
+    coverage xml --quiet
+    coverage report --no-skip-covered --include 'projects/*/tests/*' --fail-under 100
+    coverage report --no-skip-covered --include 'projects/*/src/*'
+"""
+
+[tool.poe.tasks.lint]
+control.expr = "sys.platform"
+
+[[tool.poe.tasks.lint.switch]]
+case = "win32"
+shell = """
+    echo '=== pre-commit checks ==='
+    SKIP=identity pre-commit run --all-files --hook-stage pre-commit
+    echo '=== pre-push checks ==='
+    SKIP=identity pre-commit run --all-files --hook-stage pre-push
+"""
+
+[[tool.poe.tasks.lint.switch]]
+shell = """
+    echo '\\033[0;34mpre-commit checks\\033[0m'
+    SKIP=identity pre-commit run --all-files --hook-stage pre-commit
+    echo '\\033[0;34mpre-push checks\\033[0m'
+    SKIP=identity pre-commit run --all-files --hook-stage pre-push
+"""

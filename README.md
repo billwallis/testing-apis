@@ -22,7 +22,6 @@ Any 'production' API usage will be in its own corresponding repo.
 Install the dependencies:
 
 ```shell
-pip install --editable . --requirement requirements.txt
-pip install --editable . --group dev --group test
+pip install --editable . --requirement requirements.txt --group dev --group test
 pre-commit install --install-hooks
 ```
