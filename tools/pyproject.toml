@@ -6,16 +6,13 @@ version = "0.0.0"
 dependencies = [
     "tomlkit>=0.15.0",
 ]
+scripts.add = "tools.add:main"
 
 [build-system]
-requires = ["uv_build>=0.8"]
-build-backend = "uv_build"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 
-[tool.uv.build-backend]
-namespace = true
-module-root = "src"
-module-name = [
-    "tools",
-    "utils",
-]
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true
